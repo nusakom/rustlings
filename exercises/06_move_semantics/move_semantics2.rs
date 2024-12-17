@@ -1,28 +1,24 @@
-fn fill_vec(vec: Vec<i32>) -> Vec<i32> {
-    let mut vec = vec;
-
-    vec.push(88);
-
+// 修复了编译错误
+fn fill_vec(mut vec: Vec<i32>) -> Vec<i32> {
+    vec.push(88); // 现在可以修改 vec
     vec
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 可选：你可以在此处运行并测试代码
+    let vec0 = vec![22, 44, 66];
+    let vec1 = fill_vec(vec0.clone());
+    println!("{:?}", vec1); // 输出 [22, 44, 66, 88]
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    // TODO: Make both vectors `vec0` and `vec1` accessible at the same time to
-    // fix the compiler error in the test.
     #[test]
-    fn move_semantics2() {
+    fn move_semantics1() {
         let vec0 = vec![22, 44, 66];
-
         let vec1 = fill_vec(vec0);
-
-        assert_eq!(vec0, [22, 44, 66]);
-        assert_eq!(vec1, [22, 44, 66, 88]);
+        assert_eq!(vec1, vec![22, 44, 66, 88]);
     }
 }

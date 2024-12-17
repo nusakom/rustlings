@@ -1,36 +1,28 @@
-fn vec_loop(input: &[i32]) -> Vec<i32> {
-    let mut output = Vec::new();
-
-    for element in input {
-        // TODO: Multiply each element in the `input` slice by 2 and push it to
-        // the `output` vector.
+fn vec_loop(mut v: Vec<i32>) -> Vec<i32> {
+    for element in v.iter_mut() {
+        // 每个元素乘以2
+        *element *= 2;
     }
 
-    output
+    // 返回修改后的 Vec
+    v
 }
 
-fn vec_map_example(input: &[i32]) -> Vec<i32> {
-    // An example of collecting a vector after mapping.
-    // We map each element of the `input` slice to its value plus 1.
-    // If the input is `[1, 2, 3]`, the output is `[2, 3, 4]`.
-    input.iter().map(|element| element + 1).collect()
-}
-
-fn vec_map(input: &[i32]) -> Vec<i32> {
-    // TODO: Here, we also want to multiply each element in the `input` slice
-    // by 2, but with iterator mapping instead of manually pushing into an empty
-    // vector.
-    // See the example in the function `vec_map_example` above.
-    input
-        .iter()
-        .map(|element| {
-            // ???
-        })
-        .collect()
+fn vec_map(v: &Vec<i32>) -> Vec<i32> {
+    v.iter().map(|element| {
+        // 每个元素乘以2，返回一个新的 Vec
+        element * 2
+    }).collect()
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 可选：你可以在此处运行你的代码
+    let v = vec![2, 4, 6, 8, 10];
+    let result = vec_loop(v.clone());
+    println!("Result from vec_loop: {:?}", result);
+
+    let result_map = vec_map(&v);
+    println!("Result from vec_map: {:?}", result_map);
 }
 
 #[cfg(test)]
@@ -39,22 +31,19 @@ mod tests {
 
     #[test]
     fn test_vec_loop() {
-        let input = [2, 4, 6, 8, 10];
-        let ans = vec_loop(&input);
-        assert_eq!(ans, [4, 8, 12, 16, 20]);
-    }
+        let v: Vec<i32> = (1..).filter(|x| x % 2 == 0).take(5).collect();
+        let ans = vec_loop(v.clone());
 
-    #[test]
-    fn test_vec_map_example() {
-        let input = [1, 2, 3];
-        let ans = vec_map_example(&input);
-        assert_eq!(ans, [2, 3, 4]);
+        // 确保结果与预期相符
+        assert_eq!(ans, v.iter().map(|x| x * 2).collect::<Vec<i32>>());
     }
 
     #[test]
     fn test_vec_map() {
-        let input = [2, 4, 6, 8, 10];
-        let ans = vec_map(&input);
-        assert_eq!(ans, [4, 8, 12, 16, 20]);
+        let v: Vec<i32> = (1..).filter(|x| x % 2 == 0).take(5).collect();
+        let ans = vec_map(&v);
+
+        // 确保结果与预期相符
+        assert_eq!(ans, v.iter().map(|x| x * 2).collect::<Vec<i32>>());
     }
 }

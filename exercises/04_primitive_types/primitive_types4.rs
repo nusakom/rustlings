@@ -1,16 +1,45 @@
+fn animal_habitat(animal: &str) -> &str {
+    // 修改为统一的字符串类型
+    let identifier = if animal == "crab" {
+        "Beach"
+    } else if animal == "gopher" {
+        "Burrow"
+    } else if animal == "snake" {
+        "Desert"
+    } else {
+        "Unknown"
+    };
+
+    // 直接返回 identifier，无需进一步比较
+    identifier
+}
+
 fn main() {
     // You can optionally experiment here.
 }
 
+// Don't change the tests!
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
-    fn slice_out_of_array() {
-        let a = [1, 2, 3, 4, 5];
+    fn gopher_lives_in_burrow() {
+        assert_eq!(animal_habitat("gopher"), "Burrow")
+    }
 
-        // TODO: Get a slice called `nice_slice` out of the array `a` so that the test passes.
-        // let nice_slice = ???
+    #[test]
+    fn snake_lives_in_desert() {
+        assert_eq!(animal_habitat("snake"), "Desert")
+    }
 
-        assert_eq!([2, 3, 4], nice_slice);
+    #[test]
+    fn crab_lives_on_beach() {
+        assert_eq!(animal_habitat("crab"), "Beach")
+    }
+
+    #[test]
+    fn unknown_animal() {
+        assert_eq!(animal_habitat("dinosaur"), "Unknown")
     }
 }

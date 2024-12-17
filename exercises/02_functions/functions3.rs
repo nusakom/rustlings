@@ -5,6 +5,6 @@ fn call_me(num: u8) {
 }
 
 fn main() {
-    // TODO: Fix the function call.
-    call_me();
+    // 修复函数调用，传递一个 u8 类型的参数
+    call_me(3);  // 传递一个 u8 值 3
 }

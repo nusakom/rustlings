@@ -1,14 +1,14 @@
-// TODO: Fix the compiler error in this function.
-fn fill_vec(vec: Vec<i32>) -> Vec<i32> {
-    let vec = vec;
-
-    vec.push(88);
-
+// 修复了编译错误
+fn fill_vec(mut vec: Vec<i32>) -> Vec<i32> {
+    vec.push(88); // 现在可以修改 vec
     vec
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 可选：你可以在此处运行并测试代码
+    let vec0 = vec![22, 44, 66];
+    let vec1 = fill_vec(vec0.clone());
+    println!("{:?}", vec1); // 输出 [22, 44, 66, 88]
 }
 
 #[cfg(test)]
