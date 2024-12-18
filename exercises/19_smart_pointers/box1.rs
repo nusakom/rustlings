@@ -9,21 +9,20 @@
 // item in a cons list contains two elements: The value of the current item and
 // the next item. The last item is a value called `Nil`.
 
-// TODO: Use a `Box` in the enum definition to make the code compile.
 #[derive(PartialEq, Debug)]
 enum List {
-    Cons(i32, List),
+    Cons(i32, Box<List>),
     Nil,
 }
 
-// TODO: Create an empty cons list.
+// Create an empty cons list.
 fn create_empty_list() -> List {
-    todo!()
+    List::Nil
 }
 
-// TODO: Create a non-empty cons list.
+// Create a non-empty cons list.
 fn create_non_empty_list() -> List {
-    todo!()
+    List::Cons(1, Box::new(List::Cons(2, Box::new(List::Nil))))
 }
 
 fn main() {
@@ -45,6 +44,20 @@ mod tests {
 
     #[test]
     fn test_create_non_empty_list() {
-        assert_ne!(create_empty_list(), create_non_empty_list());
+        let non_empty_list = create_non_empty_list();
+        assert_ne!(create_empty_list(), non_empty_list);
+
+        // Check the structure of the non-empty list.
+        if let List::Cons(head, tail) = non_empty_list {
+            assert_eq!(head, 1);
+            if let List::Cons(next, next_tail) = *tail {
+                assert_eq!(next, 2);
+                assert_eq!(*next_tail, List::Nil);
+            } else {
+                panic!("The second element is not correct");
+            }
+        } else {
+            panic!("The list should not be empty");
+        }
     }
 }

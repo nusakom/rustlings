@@ -1,35 +1,43 @@
-// This quiz tests:
-// - Generics
-// - Traits
-//
-// An imaginary magical school has a new report card generation system written
-// in Rust! Currently, the system only supports creating report cards where the
-// student's grade is represented numerically (e.g. 1.0 -> 5.5). However, the
-// school also issues alphabetical grades (A+ -> F-) and needs to be able to
-// print both types of report card!
-//
-// Make the necessary code changes in the struct `ReportCard` and the impl
-// block to support alphabetical report cards in addition to numerical ones.
+// 定义一个特征（Trait），用于约束可以作为成绩类型的数据，它们需要实现Display特征以便格式化输出
+trait GradeType: std::fmt::Display {}
 
-// TODO: Adjust the struct as described above.
-struct ReportCard {
-    grade: f32,
+// 为f32类型实现GradeType特征，使其能作为合法的成绩类型（数字成绩）
+impl GradeType for f32 {}
+
+// 为&str类型实现GradeType特征，使其能作为合法的成绩类型（字母成绩）
+impl GradeType for &str {}
+
+// ReportCard结构体使用泛型T，并且要求T必须实现GradeType特征
+struct ReportCard<T: GradeType> {
+    grade: T,
     student_name: String,
     student_age: u8,
 }
 
-// TODO: Adjust the impl block as described above.
-impl ReportCard {
+impl<T: GradeType> ReportCard<T> {
     fn print(&self) -> String {
         format!(
             "{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade,
+            &self.student_name, &self.student_age, &self.grade
         )
     }
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 可以在这里进行一些自定义的测试或者使用示例
+    let numeric_report_card = ReportCard {
+        grade: 3.5,
+        student_name: "Alice".to_string(),
+        student_age: 13,
+    };
+    println!("{}", numeric_report_card.print());
+
+    let alphabetic_report_card = ReportCard {
+        grade: "B",
+        student_name: "Bob".to_string(),
+        student_age: 12,
+    };
+    println!("{}", alphabetic_report_card.print());
 }
 
 #[cfg(test)]
@@ -45,7 +53,7 @@ mod tests {
         };
         assert_eq!(
             report_card.print(),
-            "Tom Wriggle (12) - achieved a grade of 2.1",
+            "Tom Wriggle (12) - achieved a grade of 2.1"
         );
     }
 
@@ -58,7 +66,7 @@ mod tests {
         };
         assert_eq!(
             report_card.print(),
-            "Gary Plotter (11) - achieved a grade of A+",
+            "Gary Plotter (11) - achieved a grade of A+"
         );
     }
 }

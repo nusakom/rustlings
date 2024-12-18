@@ -1,9 +1,3 @@
-// Let's define a simple model to track Rustlings' exercise progress. Progress
-// will be modelled using a hash map. The name of the exercise is the key and
-// the progress is the value. Two counting functions were created to count the
-// number of exercises with a given progress. Recreate this counting
-// functionality using iterators. Try to not use imperative loops (for/while).
-
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -23,11 +17,9 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
     count
 }
 
-// TODO: Implement the functionality of `count_for` but with an iterator instead
-// of a `for` loop.
+// 使用迭代器实现 `count_for` 的功能
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
-    // `map` is a hash map with `String` keys and `Progress` values.
-    // map = { "variables1": Complete, "from_str": None, … }
+    map.values().filter(|&&val| val == value).count()
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -42,16 +34,25 @@ fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progres
     count
 }
 
-// TODO: Implement the functionality of `count_collection_for` but with an
-// iterator instead of a `for` loop.
+// 使用迭代器实现 `count_collection_for` 的功能
 fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
-    // `collection` is a slice of hash maps.
-    // collection = [{ "variables1": Complete, "from_str": None, … },
-    //               { "variables2": Complete, … }, … ]
+    collection.iter().flat_map(|map| map.values()).filter(|&&val| val == value).count()
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 测试示例，供您实验
+    let mut map = HashMap::new();
+    map.insert("exercise1".to_string(), Progress::Complete);
+    map.insert("exercise2".to_string(), Progress::None);
+    map.insert("exercise3".to_string(), Progress::Some);
+    map.insert("exercise4".to_string(), Progress::Complete);
+
+    let count_complete = count_iterator(&map, Progress::Complete);
+    println!("Number of Complete exercises: {}", count_complete);
+
+    let vec_map = vec![map];
+    let total_complete = count_collection_iterator(&vec_map, Progress::Complete);
+    println!("Total Complete exercises in collection: {}", total_complete);
 }
 
 #[cfg(test)]

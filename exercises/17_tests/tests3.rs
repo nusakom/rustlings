@@ -17,7 +17,9 @@ impl Rectangle {
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 这里可以根据自己的需求添加更多代码进行测试或者其他操作
+    let rect = Rectangle::new(5, 8);
+    println!("Created a rectangle with width {} and height {}", rect.width, rect.height);
 }
 
 #[cfg(test)]
@@ -26,23 +28,19 @@ mod tests {
 
     #[test]
     fn correct_width_and_height() {
-        // TODO: This test should check if the rectangle has the size that we
-        // pass to its constructor.
         let rect = Rectangle::new(10, 20);
-        assert_eq!(todo!(), 10); // Check width
-        assert_eq!(todo!(), 20); // Check height
+        assert_eq!(rect.width, 10); // 检查宽度是否正确
+        assert_eq!(rect.height, 20); // 检查高度是否正确
     }
 
-    // TODO: This test should check if the program panics when we try to create
-    // a rectangle with negative width.
     #[test]
+    #[should_panic(expected = "Rectangle width and height must be positive")]
     fn negative_width() {
         let _rect = Rectangle::new(-10, 10);
     }
 
-    // TODO: This test should check if the program panics when we try to create
-    // a rectangle with negative height.
     #[test]
+    #[should_panic(expected = "Rectangle width and height must be positive")]
     fn negative_height() {
         let _rect = Rectangle::new(10, -10);
     }

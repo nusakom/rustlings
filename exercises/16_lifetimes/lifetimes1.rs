@@ -1,10 +1,4 @@
-// The Rust compiler needs to know how to check whether supplied references are
-// valid, so that it can let the programmer know if a reference is at risk of
-// going out of scope before it is used. Remember, references are borrows and do
-// not own their own data. What if their owner goes out of scope?
-
-// TODO: Fix the compiler error by updating the function signature.
-fn longest(x: &str, y: &str) -> &str {
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
     if x.len() > y.len() {
         x
     } else {
@@ -13,7 +7,10 @@ fn longest(x: &str, y: &str) -> &str {
 }
 
 fn main() {
-    // You can optionally experiment here.
+    let s1 = "hello";
+    let s2 = "world";
+    let result = longest(s1, s2);
+    println!("The longer string is: {}", result);
 }
 
 #[cfg(test)]
@@ -24,5 +21,7 @@ mod tests {
     fn test_longest() {
         assert_eq!(longest("abcd", "123"), "abcd");
         assert_eq!(longest("abc", "1234"), "1234");
+        assert_eq!(longest("rust", "lang"), "lang");  // 修改此处预期结果为 "lang"
+        assert_eq!(longest("a", "aa"), "aa");
     }
 }

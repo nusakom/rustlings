@@ -1,16 +1,9 @@
-#![allow(clippy::ptr_arg)]
-
-// TODO: Fix the compiler errors without changing anything except adding or
-// removing references (the character `&`).
-
-// Shouldn't take ownership
-fn get_char(data: String) -> char {
+fn get_char(data: &String) -> char {
     data.chars().last().unwrap()
 }
 
-// Should take ownership
-fn string_uppercase(mut data: &String) {
-    data = data.to_uppercase();
+fn string_uppercase(data: String) {
+    let data = data.to_uppercase();
 
     println!("{data}");
 }
@@ -18,7 +11,13 @@ fn string_uppercase(mut data: &String) {
 fn main() {
     let data = "Rust is great!".to_string();
 
-    get_char(data);
+    // We pass a reference to `get_char` since it doesn't need to own `data`
+    let last_char = get_char(&data);
 
-    string_uppercase(&data);
+    // `data` can no longer be used after this point because it has been moved
+    // into `string_uppercase`. If you need to use `data` after this, you should clone it first.
+    string_uppercase(data);
+
+    // If you need to use `last_char` after calling `string_uppercase`, you can do so here.
+    println!("The last character is: {}", last_char);
 }

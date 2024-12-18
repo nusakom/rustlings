@@ -7,11 +7,14 @@ struct Point {
 fn main() {
     let optional_point = Some(Point { x: 100, y: 200 });
 
-    // TODO: Fix the compiler error by adding something to this match statement.
+    // Using `ref p` to avoid moving the Point out of the Some variant
     match optional_point {
-        Some(p) => println!("Co-ordinates are {},{}", p.x, p.y),
+        Some(ref p) => println!("Coordinates are {},{}", p.x, p.y),
+        // The underscore `_` is not necessary here since `optional_point` is a `Some` variant
+        // But it's kept here to match the original code structure
         _ => panic!("No match!"),
     }
 
-    println!("{optional_point:?}"); // Don't change this line.
+    // This line will print the debug representation of `optional_point`
+    println!("{optional_point:?}");
 }

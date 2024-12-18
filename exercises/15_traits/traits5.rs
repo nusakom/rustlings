@@ -18,13 +18,13 @@ struct OtherStruct;
 impl SomeTrait for OtherStruct {}
 impl OtherTrait for OtherStruct {}
 
-// TODO: Fix the compiler error by only changing the signature of this function.
-fn some_func(item: ???) -> bool {
+// 通过使用泛型和特征限定来修复函数签名，使其能接收满足条件的不同类型
+fn some_func<T: SomeTrait + OtherTrait>(item: T) -> bool {
     item.some_function() && item.other_function()
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 可在这里按需添加代码进行测试等操作
 }
 
 #[cfg(test)]
@@ -33,7 +33,7 @@ mod tests {
 
     #[test]
     fn test_some_func() {
-        assert!(some_func(SomeStruct));
-        assert!(some_func(OtherStruct));
+        assert!(super::some_func(SomeStruct));
+        assert!(super::some_func(OtherStruct));
     }
 }
